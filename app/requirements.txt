@@ -2,3 +2,5 @@ requests
 uvicorn[standard]
 gunicorn
 fastapi
+sqlalchemy
+psycopg2
