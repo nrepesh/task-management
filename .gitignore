@@ -162,3 +162,4 @@ cython_debug/
 #.idea/
 pgadmin_data/*
 postgres_data/*
+.DS_Store

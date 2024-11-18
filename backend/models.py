@@ -14,3 +14,6 @@ class TaskResponse(BaseModel):
     id: int
     description: str
     created_at: datetime  
+
+class TaskRequest(BaseModel):
+    description: str

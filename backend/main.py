@@ -3,10 +3,21 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import config 
 import models 
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Replace "*" with specific origins for production
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
+)
+
 
 engine = create_engine(config.DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-app = FastAPI()
 
 
 @app.on_event("startup")
@@ -23,10 +34,10 @@ async def get_tasks() -> list[models.TaskResponse]:
         db.close()
 
 @app.post("/tasks", response_model=models.TaskResponse)
-async def post_tasks(description: str) -> models.TaskResponse:
+async def post_tasks(task: models.TaskRequest) -> models.TaskResponse:
     db = SessionLocal()
     try:
-        new_task = models.Task(description=description)
+        new_task = models.Task(description=task.description)
         db.add(new_task)
         db.commit()
         db.refresh(new_task)
@@ -39,15 +50,15 @@ async def post_tasks(description: str) -> models.TaskResponse:
         db.close()
 
 @app.delete("/tasks/{id}", response_model=dict)
-async def delete_tasks(task_id: int) -> dict:
+async def delete_tasks(id: int) -> dict:
     db = SessionLocal()
     try:
-        task = db.query(models.Task).filter(models.Task.id == task_id).first()
+        task = db.query(models.Task).filter(models.Task.id == id).first()
         if not task:
             raise HTTPException(status_code=404, detail="Task not found in DB")
         
         db.delete(task)
         db.commit()
-        return {"message": f"Task '{task_id}' deleted successfully"}
+        return {"message": f"Task '{id}' deleted successfully"}
     finally: 
         db.close()
