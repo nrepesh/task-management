@@ -1,10 +1,11 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8000'; // Adjust this URL if your backend runs on a different port or host
+const BASE_URL = 'http://localhost:8000';
 
 /**
  * Fetch all tasks from the backend.
- * @returns {Promise<Array>} Array of task objects
+ * Makes a GET request to the /tasks endpoint to retrieve the list of tasks.
+ * @returns {Promise<Array>} Array of task objects from the backend
  */
 export const getTasks = async () => {
     try {
@@ -18,8 +19,9 @@ export const getTasks = async () => {
 
 /**
  * Add a new task to the backend.
- * @param {string} description - The description of the task
- * @returns {Promise<Object>} The created task object
+ * Sends a POST request to the /tasks endpoint with the task description in the request body.
+ * @param {string} description - The description of the new task
+ * @returns {Promise<Object>} The created task object returned from the backend
  */
 export const addTask = async (description) => {
     try {
@@ -33,8 +35,9 @@ export const addTask = async (description) => {
 
 /**
  * Delete a task by ID from the backend.
+ * Makes a DELETE request to the /tasks/:id endpoint to delete the specified task.
  * @param {number} id - The ID of the task to delete
- * @returns {Promise<Object>} Confirmation message
+ * @returns {Promise<Object>} A confirmation message from the backend
  */
 export const deleteTask = async (id) => {
     try {

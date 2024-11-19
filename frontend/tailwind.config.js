@@ -1,7 +1,7 @@
 module.exports = {
-    content: ['./src/**/*.{js,jsx,ts,tsx}'], // Scan these files for Tailwind classes
+    content: ['./src/**/*.{js,jsx,ts,tsx}'],
     theme: {
-        extend: {}, // Add custom styles here if needed
+        extend: {},
     },
-    plugins: [], // Add Tailwind plugins here if needed
+    plugins: [],
 };
