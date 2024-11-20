@@ -1,7 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from sqlalchemy import create_engine 
 from sqlalchemy.orm import sessionmaker
-import config 
 import models 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -16,7 +15,7 @@ app.add_middleware(
     allow_headers=["*"],  
 )
 
-engine = create_engine(config.DATABASE_URL)
+engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 @app.on_event("startup")
@@ -26,7 +25,7 @@ def create_tables():
     It ensures that the database tables are created using the SQLAlchemy Base metadata.
     The `checkfirst=True` parameter ensures that tables are not recreated if they already exist.
     """
-    config.Base.metadata.create_all(bind=engine, checkfirst=True)
+    models.Base.metadata.create_all(bind=engine, checkfirst=True)
 
 @app.get("/tasks", response_model=list[models.TaskResponse])
 async def get_tasks() -> list[models.TaskResponse]:
